@@ -1,6 +1,7 @@
 class BankAccount:
-    def __init__(self, name, balance=0):
+    def __init__(self, name, pin, balance=0):
         self.name = name
+        self.pin = pin
         self.balance = balance
 
     def deposit(self, amount):
@@ -23,12 +24,12 @@ class BankAccount:
         print(f"💰 {self.name}, your current balance is ₹{self.balance}")
 
 
-# Dictionary to store multiple accounts
+# Dictionary to store accounts
 accounts = {}
 
-# Main loop
+# Main system loop
 while True:
-    print("\n🏦 Welcome to Python Bank System")
+    print("\n🏦 Python Bank Secure System")
     print("1. Create New Account")
     print("2. Login to Account")
     print("3. Exit")
@@ -40,40 +41,48 @@ while True:
         if name in accounts:
             print("⚠️ Account already exists!")
         else:
-            accounts[name] = BankAccount(name)
-            print(f"✅ Account created for {name}!")
+            pin = input("Set a 4-digit PIN: ").strip()
+            if len(pin) == 4 and pin.isdigit():
+                accounts[name] = BankAccount(name, pin)
+                print(f"✅ Account created for {name} with secure PIN.")
+            else:
+                print("❌ PIN must be exactly 4 digits.")
 
     elif choice == "2":
         name = input("Enter your username: ").strip()
         if name not in accounts:
             print("❌ Account not found.")
         else:
-            account = accounts[name]
-            while True:
-                print(f"\n👋 Hello {name}!")
-                print("1. Deposit")
-                print("2. Withdraw")
-                print("3. Show Balance")
-                print("4. Logout")
+            pin = input("Enter your 4-digit PIN: ").strip()
+            if accounts[name].pin == pin:
+                account = accounts[name]
+                while True:
+                    print(f"\n👋 Hello {name}!")
+                    print("1. Deposit")
+                    print("2. Withdraw")
+                    print("3. Show Balance")
+                    print("4. Logout")
 
-                action = input("Choose an option (1-4): ")
+                    action = input("Choose an option (1-4): ")
 
-                if action == "1":
-                    amt = float(input("Enter amount to deposit: ₹"))
-                    account.deposit(amt)
-                elif action == "2":
-                    amt = float(input("Enter amount to withdraw: ₹"))
-                    account.withdraw(amt)
-                elif action == "3":
-                    account.show_balance()
-                elif action == "4":
-                    print("🔒 Logged out successfully.")
-                    break
-                else:
-                    print("❌ Invalid choice.")
+                    if action == "1":
+                        amt = float(input("Enter amount to deposit: ₹"))
+                        account.deposit(amt)
+                    elif action == "2":
+                        amt = float(input("Enter amount to withdraw: ₹"))
+                        account.withdraw(amt)
+                    elif action == "3":
+                        account.show_balance()
+                    elif action == "4":
+                        print("🔒 Logged out.")
+                        break
+                    else:
+                        print("❌ Invalid choice.")
+            else:
+                print("❌ Incorrect PIN!")
 
     elif choice == "3":
-        print("👋 Thank you for using Python Bank. Goodbye!")
+        print("👋 Thank you for using Python Bank. Bye!")
         break
     else:
-        print("❌ Invalid input. Try again.")
+        print("❌ Invalid input.")
