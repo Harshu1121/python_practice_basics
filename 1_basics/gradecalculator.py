@@ -1,4 +1,7 @@
 score=int(input("Enter your grade:"))
+if score>=101:
+    print("check the marks again")
+    exit()
 if score >=90:
     grade="A"
 elif score>=80:
